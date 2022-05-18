@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {ReusablePdfViewerComponent} from "./reuseable-pdf-viewer/reusable-pdf-viewer.component";
-import {ReusablePdfViewerDirective} from "./reuseable-pdf-viewer/reusable-pdf-viewer.directive";
 import {RouterModule} from "@angular/router";
 import {FileComponent} from './file/file.component';
 import {HomeComponent} from './home/home.component';
@@ -12,7 +11,6 @@ import {HomeComponent} from './home/home.component';
   declarations: [
     AppComponent,
     ReusablePdfViewerComponent,
-    ReusablePdfViewerDirective,
     FileComponent,
     HomeComponent
   ],

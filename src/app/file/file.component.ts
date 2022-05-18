@@ -3,7 +3,6 @@ import {ReusablePdfViewer} from "../reuseable-pdf-viewer/reusable-pdf-viewer.ser
 import {ActivatedRoute} from "@angular/router";
 import {combineLatest, Subject} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, map, takeUntil, takeWhile, tap, throttleTime} from "rxjs/operators";
-import {ReusablePdfViewerBuilder} from "../reuseable-pdf-viewer/reusable-pdf-viewer-builder.service";
 
 @Component({
   selector: 'app-file',
@@ -13,13 +12,13 @@ import {ReusablePdfViewerBuilder} from "../reuseable-pdf-viewer/reusable-pdf-vie
 export class FileComponent implements OnDestroy {
   onDestroy$ = new Subject();
 
-  constructor(readonly reusablePdfViewer: ReusablePdfViewer, readonly activatedRoute: ActivatedRoute, readonly reusablePdfViewerBuilder: ReusablePdfViewerBuilder) {
+  constructor(readonly reusablePdfViewer: ReusablePdfViewer, readonly activatedRoute: ActivatedRoute) {
     console.log('FileComponent created');
     const filename$ = this.activatedRoute.paramMap.pipe(map(params => params.get('filename')));
-    combineLatest([filename$, this.reusablePdfViewer.initialized$, reusablePdfViewerBuilder.attached$])
+    combineLatest([filename$, this.reusablePdfViewer.initialized$])
       .pipe(
         takeUntil(this.onDestroy$),
-        filter(([, initialized, attached]) => initialized && attached),
+        filter(([, initialized]) => initialized),
       )
       .subscribe(([filename]) => {
         this.reusablePdfViewer.loadDocument(filename)

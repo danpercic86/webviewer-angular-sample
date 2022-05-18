@@ -2,7 +2,8 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {ReusablePdfViewer} from './reusable-pdf-viewer.service';
 
 @Component({
-  template: '<div #viewer style="height: 100%"></div>',
+  selector: 'app-reusable-pdf-viewer',
+  template: `<div  #viewer style="height: 100%"></div>`,
   styles: [
     `
       :host {
@@ -15,12 +16,20 @@ import {ReusablePdfViewer} from './reusable-pdf-viewer.service';
 export class ReusablePdfViewerComponent implements OnInit, OnDestroy {
   @ViewChild('viewer', {static: true}) readonly viewer: ElementRef;
 
-  constructor(private readonly _reusablePdfViewer: ReusablePdfViewer) {
+  constructor(readonly reusablePdfViewer: ReusablePdfViewer) {
+
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+
+    await this.reusablePdfViewer.init(this.viewer.nativeElement);
+
     console.log('ReusablePdfViewerComponent created');
-    return this._reusablePdfViewer.init(this.viewer.nativeElement);
+
+    this.reusablePdfViewer.show$.subscribe(show => {
+      console.log(show)
+      this.viewer.nativeElement.style.visibility = show ? 'visible' : 'hidden';
+    })
   }
 
   ngOnDestroy() {
